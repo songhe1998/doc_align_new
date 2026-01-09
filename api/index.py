@@ -60,12 +60,18 @@ router = APIRouter()
 
 @router.get("/health")
 async def health_check():
+    import openai, httpx, pydantic
     return {
         "status": "ok" if MODULES_LOADED else "error", 
         "message": "LegalAlign API is running" if MODULES_LOADED else "Safe Mode (Modules Failed)",
         "modules_loaded": MODULES_LOADED,
         "import_error": IMPORT_ERROR,
-        "version": VERSION
+        "version": VERSION,
+        "libs": {
+            "openai": openai.__version__,
+            "httpx": httpx.__version__,
+            "pydantic": pydantic.__version__
+        }
     }
 
 class AlignRequest(BaseModel):
