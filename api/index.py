@@ -141,5 +141,18 @@ async def get_demo_data():
 app.include_router(router, prefix="/api")
 app.include_router(router) # For when Vercel strips the prefix or requests come to root context
 
+# Debug Catch-All
+from fastapi import Request
+@app.exception_handler(404)
+async def custom_404_handler(request: Request, exc):
+    return {
+        "detail": "Not Found (Debug Mode)",
+        "path": request.url.path,
+        "method": request.method,
+        "root_path": request.scope.get("root_path", ""),
+        "headers": dict(request.headers),
+        "params": dict(request.query_params)
+    }
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
