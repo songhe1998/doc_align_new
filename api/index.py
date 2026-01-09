@@ -4,12 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import shutil
 import os
-import tempfile
+import sys
 
-# Import our existing modules using relative imports (for package support)
-from . import aligner
-from . import augmenter
-from . import utils
+# Add current directory to path so we can import modules
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+import aligner
+import augmenter
+import utils
 
 # Initialize FastAPI with specific docs URLs for /api prefix
 app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
@@ -22,6 +24,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/api/health")
+async def health_check():
+    return {"status": "ok", "message": "LegalAlign API is running"}
 
 class AlignRequest(BaseModel):
     target_text: str
