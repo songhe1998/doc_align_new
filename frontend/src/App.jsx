@@ -35,6 +35,24 @@ function App() {
 
   const [history, setHistory] = useState([]); // Stack of modText states
 
+  // Helper to handle fetch errors
+  const fetchWithCheck = async (url, options) => {
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      const text = await res.text();
+      let errorMsg = `Server Error ${res.status}`;
+      try {
+        const json = JSON.parse(text);
+        if (json.detail) errorMsg += `: ${json.detail}`;
+        else errorMsg += `: ${text}`;
+      } catch (e) {
+        errorMsg += `: ${text.substring(0, 200)}`; // Truncate HTML
+      }
+      throw new Error(errorMsg);
+    }
+    return res.json();
+  };
+
   const handleFileUpload = async (e, isTarget) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -43,11 +61,10 @@ function App() {
     formData.append("file", file);
 
     try {
-      const res = await fetch(`${API_URL}/upload`, {
+      const data = await fetchWithCheck(`${API_URL}/upload`, {
         method: "POST",
         body: formData
       });
-      const data = await res.json();
 
       if (isTarget) {
         setTargetFile(data.filename);
@@ -59,7 +76,7 @@ function App() {
       }
     } catch (err) {
       console.error(err);
-      alert("Upload failed");
+      alert(err.message);
     }
   };
 
@@ -67,16 +84,15 @@ function App() {
     if (!targetText || !modText) return;
     setIsAligning(true);
     try {
-      const res = await fetch(`${API_URL}/align`, {
+      const data = await fetchWithCheck(`${API_URL}/align`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ target_text: targetText, mod_text: modText })
       });
-      const data = await res.json();
       setAlignments(data.alignments);
     } catch (err) {
       console.error(err);
-      alert("Alignment failed");
+      alert(err.message);
     } finally {
       setIsAligning(false);
     }
@@ -89,16 +105,15 @@ function App() {
       // Push current state to history
       setHistory(prev => [...prev, modText]);
 
-      const res = await fetch(`${API_URL}/augment`, {
+      const data = await fetchWithCheck(`${API_URL}/augment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ target_text: targetText, mod_text: modText, alignments: alignments })
       });
-      const data = await res.json();
       setModText(data.augmented_text);
     } catch (err) {
       console.error(err);
-      alert("Augmentation failed");
+      alert(err.message);
     } finally {
       setIsAugmenting(false);
     }
@@ -106,8 +121,7 @@ function App() {
 
   const handleLoadDemo = async () => {
     try {
-      const res = await fetch(`${API_URL}/demo-data`);
-      const data = await res.json();
+      const data = await fetchWithCheck(`${API_URL}/demo-data`);
 
       setTargetFile(data.target.filename);
       setTargetText(data.target.content);
@@ -117,7 +131,7 @@ function App() {
       setHistory([data.mod.content]);
     } catch (err) {
       console.error(err);
-      alert("Failed to load demo data");
+      alert(err.message);
     }
   };
 
