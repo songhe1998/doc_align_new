@@ -45,7 +45,11 @@ function App() {
     // Extract the segment after /api/
     const segment = url.split("/api/")[1];
     const separator = url.includes("?") ? "&" : "?";
-    const tunneledUrl = segment ? `${url}${separator}__path=${segment}` : url;
+    // Change param to _action to be safe
+    const tunneledUrl = segment ? `${url}${separator}_action=${segment}` : url;
+
+    // DEBUG ALERT: Verify frontend is sending it
+    alert(`Debug Fetching: ${tunneledUrl}`);
 
     const res = await fetch(tunneledUrl, options);
     if (!res.ok) {
@@ -237,7 +241,7 @@ function App() {
       {/* Footer / Status */}
       <footer className="bg-white border-t px-6 py-2 text-xs text-gray-500 flex justify-between">
         <span>{alignments.length > 0 ? `Found ${alignments.length} aligned topics` : "Ready"}</span>
-        <span>v1.0.0</span>
+        <span>v1.0.3-Debug</span>
       </footer>
     </div>
   );
