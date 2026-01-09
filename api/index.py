@@ -6,12 +6,13 @@ import shutil
 import os
 import tempfile
 
-# Import our existing modules
-import aligner
-import augmenter
-import utils
+# Import our existing modules using relative imports (for package support)
+from . import aligner
+from . import augmenter
+from . import utils
 
-app = FastAPI()
+# Initialize FastAPI with specific docs URLs for /api prefix
+app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
 
 # Allow CORS for frontend
 app.add_middleware(
@@ -31,7 +32,7 @@ class AugmentRequest(BaseModel):
     mod_text: str
     alignments: list
 
-@app.post("/upload")
+@app.post("/api/upload")
 async def upload_file(file: UploadFile = File(...)):
     try:
         # Save to temp file to read it
@@ -53,7 +54,7 @@ async def upload_file(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/align")
+@app.post("/api/align")
 async def align_docs(req: AlignRequest):
     try:
         raw_output = aligner.align_documents(req.target_text, req.mod_text)
@@ -65,7 +66,7 @@ async def align_docs(req: AlignRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/augment")
+@app.post("/api/augment")
 async def augment_docs(req: AugmentRequest):
     try:
         augmented_text = augmenter.augment_document(req.target_text, req.mod_text, req.alignments)
@@ -73,17 +74,29 @@ async def augment_docs(req: AugmentRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/demo-data")
+@app.get("/api/demo-data")
 async def get_demo_data():
     try:
-        # Assuming CWD is project root
-        target_path = "ndas/1588052992CCTV%20Non%20Disclosure%20Agreement.pdf"
-        mod_path = "ndas/20150916-model-sharing-non-disclosure-agreement.pdf"
+        # Path resolution for Vercel environment
+        # Vercel copies api files to some root. 
+        # But we need to look for ndas which we un-ignored.
+        # Actually we need to check where we are running.
+        
+        # Try finding the file relative to this script
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        # ndas should be in the parent of api/
+        # But we added it to gitignore with exclusions.
+        # Wait, file structure on Vercel:
+        # /var/task/api/...
+        # /var/task/ndas/...
+        
+        project_root = os.path.dirname(base_dir)
+        target_path = os.path.join(project_root, "ndas", "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf")
+        mod_path = os.path.join(project_root, "ndas", "20150916-model-sharing-non-disclosure-agreement.pdf")
         
         if not os.path.exists(target_path):
-            # Fallback if running from backend dir
-            target_path = "../ndas/1588052992CCTV%20Non%20Disclosure%20Agreement.pdf"
-            mod_path = "../ndas/20150916-model-sharing-non-disclosure-agreement.pdf"
+             # Fallback logic removed, rely on os.path.join
+             print(f"File not found at {target_path}")
         
         target_content = utils.read_file(target_path)
         mod_content = utils.read_file(mod_path)
