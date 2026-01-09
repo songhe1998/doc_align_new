@@ -192,17 +192,47 @@ async def health_check_direct():
 # Also keep the function-based versions for internal logic or other mounts, 
 # but the @app. verb ones above are the primary public entrypoints.
 
-# Debug Catch-All (From Sanity Check success)
+# ROOT DISPATCHER (The "Nuclear" Option)
+# If Vercel strips path to '/', we catch it here and route manually using ?__path=
+@app.api_route("/", methods=["GET", "POST"])
+async def root_dispatcher(request: Request):
+    qp = request.query_params
+    target = qp.get("__path", "")
+    
+    print(f"ROOT DISPATCH: target='{target}'")
+
+    if target == "demo-data":
+        return await get_demo_data_direct()
+    elif target == "health":
+        return await health_check_direct()
+    elif target == "align":
+        # Need to parse body manually or forward? 
+        # Since this is a manual dispatch, we might need to reconstruct the model.
+        # But 'align' is POST.
+        # Let's try to trust the middleware first, but this dispatcher handles GETs easily.
+        # For POSTs with bodies, it's trickier. 
+        # Let's return a specific error that proves we got here.
+        return JSONResponse(status_code=400, content={"detail": "Please use direct POST", "dispatch": "root"})
+    
+    return {
+        "detail": "Root Dispatcher (Path not found)",
+        "target_path": target,
+        "query_params": dict(qp),
+        "headers": dict(request.headers)
+    }
+
+# Debug Catch-All
 @app.api_route("/{path_name:path}", methods=["GET", "POST"])
 async def catch_all(request: Request, path_name: str):
      return {
         "detail": "Not Found (Catch-All)", 
         "path": path_name,
         "scope_path": request.scope.get("path"),
-        "scope_root_path": request.scope.get("root_path"),
+        "query_params": dict(request.query_params), # ADDED THIS
         "headers": dict(request.headers),
         "available_routes": [r.path for r in app.routes if hasattr(r, 'path')]
     }
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
