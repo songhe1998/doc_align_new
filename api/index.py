@@ -18,6 +18,7 @@ if current_dir not in sys.path:
 # Safe Boot: Try to import modules, capture error if fails
 MODULES_LOADED = False
 IMPORT_ERROR = None
+VERSION = "1.0.1-StaticDemo" # Update this to verify deployment
 
 try:
     import aligner
@@ -50,7 +51,8 @@ async def health_check():
         "status": "ok" if MODULES_LOADED else "error", 
         "message": "LegalAlign API is running" if MODULES_LOADED else "LegalAlign API started in Safe Mode (Modules Failed)",
         "modules_loaded": MODULES_LOADED,
-        "import_error": IMPORT_ERROR
+        "import_error": IMPORT_ERROR,
+        "version": VERSION
     }
 
 class AlignRequest(BaseModel):
