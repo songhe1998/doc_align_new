@@ -138,7 +138,29 @@ async def get_demo_data():
 
 # Mounting Strategy: Double Mount for robustness
 app.include_router(router, prefix="/api")
-app.include_router(router) 
+app.include_router(router)
+
+# Debug 404 Handler - Critical for routing diagnosis
+@app.exception_handler(404)
+async def custom_404_handler(request: Request, exc):
+    # Flatten route list for debugging
+    routes = []
+    for route in app.routes:
+        if hasattr(route, "path"):
+            routes.append(route.path)
+        elif hasattr(route, "path_format"):
+             routes.append(route.path_format)
+    
+    return JSONResponse(
+        status_code=404,
+        content={
+            "detail": "Not Found (Debug Mode)",
+            "requested_path": request.url.path,
+            "method": request.method,
+            "root_path": request.scope.get("root_path", ""),
+            "registered_routes": routes
+        }
+    )
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
