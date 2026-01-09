@@ -3,6 +3,7 @@
 set -o errexit
 
 echo "--- Installing Python Dependencies ---"
+pip install --upgrade pip
 pip install -r requirements.txt
 
 echo "--- Building Frontend ---"
