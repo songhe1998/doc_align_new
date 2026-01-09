@@ -119,37 +119,60 @@ async def augment_docs(req: AugmentRequest):
 async def get_demo_data():
     """
     Returns static demo data to avoid filesystem reads on Vercel.
-    This isolates whether the issue is file access permissions.
     """
-    target_content = (
-        "NON-DISCLOSURE AGREEMENT\n\n"
-        "This Non-Disclosure Agreement (the \"Agreement\") is entered into by and between "
-        "Company A (\"Discloser\") and Company B (\"Recipient\").\n\n"
-        "1. Confidential Information\n"
-        "Definition: 'Confidential Information' means all non-public information disclosed by Discloser, "
-        "whether written or oral, that is designated as confidential or effectively should be treated as such.\n\n"
-        "2. Obligations\n"
-        "Recipient agrees to hold Confidential Information in strict confidence and use it only for the Purpose."
-    )
-    
-    mod_content = (
-        "CONFIDENTIALITY AGREEMENT\n\n"
-        "Parties: Company A and Company B.\n\n"
-        "1. Definition of Confidential Info\n"
-        "'Confidential Information' refers to any proprietary data shared between the parties.\n\n"
-        "2. Duty of Care\n"
-        "receiving party shall protect the information with reasonable care."
-    )
+    try:
+        target_content = (
+            "NON-DISCLOSURE AGREEMENT\n\n"
+            "This Non-Disclosure Agreement (the \"Agreement\") is entered into by and between "
+            "Company A (\"Discloser\") and Company B (\"Recipient\").\n\n"
+            "1. Confidential Information\n"
+            "Definition: 'Confidential Information' means all non-public information disclosed by Discloser, "
+            "whether written or oral, that is designated as confidential or effectively should be treated as such.\n\n"
+            "2. Obligations\n"
+            "Recipient agrees to hold Confidential Information in strict confidence and use it only for the Purpose."
+        )
+        
+        mod_content = (
+            "CONFIDENTIALITY AGREEMENT\n\n"
+            "Parties: Company A and Company B.\n\n"
+            "1. Definition of Confidential Info\n"
+            "'Confidential Information' refers to any proprietary data shared between the parties.\n\n"
+            "2. Duty of Care\n"
+            "receiving party shall protect the information with reasonable care."
+        )
 
-    return {
-        "target": {"filename": "Demo_Target_Static.txt", "content": target_content},
-        "mod": {"filename": "Demo_Mod_Static.txt", "content": mod_content}
-    }
+        return {
+            "target": {"filename": "Demo_Target_Static.txt", "content": target_content},
+            "mod": {"filename": "Demo_Mod_Static.txt", "content": mod_content}
+        }
+    except Exception as e:
+        import traceback
+        error_msg = f"{str(e)}\n{traceback.format_exc()}"
+        return JSONResponse(status_code=500, content={"detail": error_msg, "type": "DemoDataError"})
 
-# Include the router TWICE to handle both /api/path and /path
-# This solves the Vercel routing ambiguity
+# SIMPLIFIED ROUTING:
+# We rely on vercel.json to send /api/* -> /api/index.py
+# Inside index.py, we want to handle paths RELATIVE to the mount.
+# But Vercel behavior varies.
+# SAFEST BET: Mount at ROOT. If Vercel strips /api, it hits /demo-data.
+# If Vercel keeps /api, we need to handle that?
+# Let's use a wildcard mount or keep the double mount but safer?
+# Actually, the user says /health works. /health matches ONE of them.
+# The issue is /demo-data fails.
+
+# Let's clear the router include and use detailed explicit routes if needed? No, too much work.
+# Let's try mounting ONLY at root. Vercel usually strips the prefix if rewrite destination is a file.
+app.include_router(router)
+# Also add a specific /api prefix just in case, but AFTER root?
+# No, let's stick to the double mount but validly.
+
+# WAIT. If I mount at /api AND /, and Vercel sends /api/demo-data.
+# It matches /api prefix -> path /demo-data.
+# If Vercel sends /demo-data.
+# It matches / prefix -> path /demo-data.
+
+# Let's keep double router but ensure no conflicts.
 app.include_router(router, prefix="/api")
-app.include_router(router) # For when Vercel strips the prefix or requests come to root context
 
 # Debug Catch-All
 from fastapi import Request
