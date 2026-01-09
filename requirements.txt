@@ -1,5 +1,6 @@
-openai
-pypdf
-fastapi
-uvicorn
-python-multipart
+fastapi==0.109.0
+uvicorn==0.27.0
+pydantic==2.5.3
+python-multipart==0.0.6
+openai==1.6.1
+pypdf==3.17.4

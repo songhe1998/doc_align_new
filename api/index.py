@@ -15,6 +15,3 @@ def demo_data():
 @app.api_route("/{path_name:path}", methods=["GET", "POST"])
 async def catch_all(path_name: str):
     return {"status": "ok", "path": path_name, "mode": "catch_all"}
-
-# Vercel Entrypoint
-handler = app
