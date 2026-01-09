@@ -58,7 +58,7 @@ Rules:
             return "Error: OPENAI_API_KEY not configured."
 
         response = client.chat.completions.create(
-            model="gpt-5",
+            model="gpt-4-turbo-preview",  # Use a valid model name (gpt-5 isn't public yet)
             messages=[
                 {"role": "system", "content": "You are a precise legal assistant."},
                 {"role": "user", "content": prompt}
@@ -67,7 +67,7 @@ Rules:
         return response.choices[0].message.content
     except Exception as e:
         print(f"Error calling LLM: {e}")
-        return None
+        raise e # Re-raise to let the caller handle it
 
 def parse_alignments(alignment_text):
     """

@@ -100,13 +100,13 @@ async def align_docs(req: AlignRequest):
     try:
         raw_output = aligner.align_documents(req.target_text, req.mod_text)
         if not raw_output:
-             return JSONResponse(status_code=500, content={"detail": "LLM alignment failed", "type": "LLMError"})
+             return JSONResponse(status_code=500, content={"detail": "LLM alignment returned empty response", "type": "EmptyResponse"})
         
         alignments = aligner.parse_alignments(raw_output)
         return {"alignments": alignments}
     except Exception as e:
         import traceback
-        return JSONResponse(status_code=500, content={"detail": f"{str(e)}\n{traceback.format_exc()}", "type": "AlignError"})
+        return JSONResponse(status_code=500, content={"detail": f"LLM Error: {str(e)}", "type": "LLMError", "trace": traceback.format_exc()})
 
 @app.post("/augment")
 async def augment_docs(req: AugmentRequest):
