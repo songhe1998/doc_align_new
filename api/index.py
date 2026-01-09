@@ -117,67 +117,34 @@ async def augment_docs(req: AugmentRequest):
 
 @router.get("/demo-data")
 async def get_demo_data():
-    try:
-        # Robust path finding
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.dirname(base_dir) # parent of api/
-        
-        # Check standard location (local) or Vercel location
-        paths_to_try = [
-            os.path.join(project_root, "ndas"),
-            os.path.join(os.getcwd(), "ndas"),
-            "ndas",
-            "/var/task/ndas"
-        ]
-        
-        found_target = None
-        found_mod = None
-        
-        target_name = "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf"
-        mod_name = "20150916-model-sharing-non-disclosure-agreement.pdf"
+    """
+    Returns static demo data to avoid filesystem reads on Vercel.
+    This isolates whether the issue is file access permissions.
+    """
+    target_content = (
+        "NON-DISCLOSURE AGREEMENT\n\n"
+        "This Non-Disclosure Agreement (the \"Agreement\") is entered into by and between "
+        "Company A (\"Discloser\") and Company B (\"Recipient\").\n\n"
+        "1. Confidential Information\n"
+        "Definition: 'Confidential Information' means all non-public information disclosed by Discloser, "
+        "whether written or oral, that is designated as confidential or effectively should be treated as such.\n\n"
+        "2. Obligations\n"
+        "Recipient agrees to hold Confidential Information in strict confidence and use it only for the Purpose."
+    )
+    
+    mod_content = (
+        "CONFIDENTIALITY AGREEMENT\n\n"
+        "Parties: Company A and Company B.\n\n"
+        "1. Definition of Confidential Info\n"
+        "'Confidential Information' refers to any proprietary data shared between the parties.\n\n"
+        "2. Duty of Care\n"
+        "receiving party shall protect the information with reasonable care."
+    )
 
-        debug_logs = []
-        
-        for p in paths_to_try:
-            t = os.path.join(p, target_name)
-            m = os.path.join(p, mod_name)
-            debug_logs.append(f"Checking {t}")
-            if os.path.exists(t):
-                found_target = t
-                found_mod = m
-                break
-        
-        if not found_target:
-             target_name_space = "1588052992CCTV Non Disclosure Agreement.pdf"
-             for p in paths_to_try:
-                t = os.path.join(p, target_name_space)
-                m = os.path.join(p, mod_name)
-                debug_logs.append(f"Checking {t}")
-                if os.path.exists(t):
-                    found_target = t
-                    found_mod = m
-                    break
-        
-        if not found_target:
-            return {
-                "target": {"filename": "Error", "content": f"Demo files not found. Searched: {debug_logs}"}, 
-                "mod": {"filename": "Error", "content": ""}
-            }
-
-        target_content = utils.read_file(found_target)
-        mod_content = utils.read_file(found_mod)
-        
-        return {
-            "target": {"filename": "Demo_Target.pdf", "content": target_content},
-            "mod": {"filename": "Demo_Mod.pdf", "content": mod_content}
-        }
-    except Exception as e:
-        import traceback
-        error_msg = f"{str(e)}\n{traceback.format_exc()}"
-        return {
-            "target": {"filename": "Error", "content": error_msg}, 
-            "mod": {"filename": "Error", "content": ""}
-        }
+    return {
+        "target": {"filename": "Demo_Target_Static.txt", "content": target_content},
+        "mod": {"filename": "Demo_Mod_Static.txt", "content": mod_content}
+    }
 
 # Include the router TWICE to handle both /api/path and /path
 # This solves the Vercel routing ambiguity
