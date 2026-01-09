@@ -37,7 +37,17 @@ function App() {
 
   // Helper to handle fetch errors
   const fetchWithCheck = async (url, options) => {
-    const res = await fetch(url, options);
+    // Client-Side Path Tunneling:
+    // Append the endpoint path as a query parameter to ensure it survives Vercel's aggressive stripping.
+    // url is like "/api/demo-data"
+    // We want "/api/demo-data?__path=demo-data"
+
+    // Extract the segment after /api/
+    const segment = url.split("/api/")[1];
+    const separator = url.includes("?") ? "&" : "?";
+    const tunneledUrl = segment ? `${url}${separator}__path=${segment}` : url;
+
+    const res = await fetch(tunneledUrl, options);
     if (!res.ok) {
       const text = await res.text();
       let errorMsg = `Server Error ${res.status}`;
