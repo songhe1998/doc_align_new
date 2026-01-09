@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .bg-red-200 {
+        background-color: #fecaca;
+    }
+
+    .border-red-500 {
+        border-color: #ef4444;
+    }
+
+    .bg-orange-200 {
+        background-color: #fed7aa;
+    }
+
+    .border-orange-500 {
+        border-color: #f97316;
+    }
+
+    .bg-amber-200 {
+        background-color: #fde68a;
+    }
+
+    .border-amber-500 {
+        border-color: #f59e0b;
+    }
+
+    .bg-yellow-200 {
+        background-color: #fef08a;
+    }
+
+    .border-yellow-500 {
+        border-color: #eab308;
+    }
+
+    .bg-lime-200 {
+        background-color: #d9f99d;
+    }
+
+    .border-lime-500 {
+        border-color: #84cc16;
+    }
+
+    .bg-green-200 {
+        background-color: #bbf7d0;
+    }
+
+    .border-green-500 {
+        border-color: #22c55e;
+    }
+
+    .bg-emerald-200 {
+        background-color: #a7f3d0;
+    }
+
+    .border-emerald-500 {
+        border-color: #10b981;
+    }
+
+    .bg-teal-200 {
+        background-color: #99f6e4;
+    }
+
+    .border-teal-500 {
+        border-color: #14b8a6;
+    }
+
+    .bg-cyan-200 {
+        background-color: #a5f3fc;
+    }
+
+    .border-cyan-500 {
+        border-color: #06b6d4;
+    }
+
+    .bg-sky-200 {
+        background-color: #bae6fd;
+    }
+
+    .border-sky-500 {
+        border-color: #0ea5e9;
+    }
+
+    .bg-blue-200 {
+        background-color: #bfdbfe;
+    }
+
+    .border-blue-500 {
+        border-color: #3b82f6;
+    }
+
+    .bg-indigo-200 {
+        background-color: #c7d2fe;
+    }
+
+    .border-indigo-500 {
+        border-color: #6366f1;
+    }
+
+    .bg-violet-200 {
+        background-color: #ddd6fe;
+    }
+
+    .border-violet-500 {
+        border-color: #8b5cf6;
+    }
+
+    .bg-purple-200 {
+        background-color: #e9d5ff;
+    }
+
+    .border-purple-500 {
+        border-color: #a855f7;
+    }
+
+    .bg-fuchsia-200 {
+        background-color: #f5d0fe;
+    }
+
+    .border-fuchsia-500 {
+        border-color: #d946ef;
+    }
+
+    .bg-pink-200 {
+        background-color: #fbcfe8;
+    }
+
+    .border-pink-500 {
+        border-color: #ec4899;
+    }
+
+    .bg-rose-200 {
+        background-color: #fecdd3;
+    }
+
+    .border-rose-500 {
+        border-color: #f43f5e;
+    }
+}

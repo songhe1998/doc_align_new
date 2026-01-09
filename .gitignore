@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+venv/
+.DS_Store
+node_modules/
+dist/
+.vercel/
+ndas/*
+!ndas/1588052992CCTV%20Non%20Disclosure%20Agreement.pdf
+!ndas/20150916-model-sharing-non-disclosure-agreement.pdf
+
