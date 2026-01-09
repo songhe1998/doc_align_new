@@ -171,10 +171,13 @@ async def health_check_direct():
 
 # Debug Catch-All (From Sanity Check success)
 @app.api_route("/{path_name:path}", methods=["GET", "POST"])
-async def catch_all(path_name: str):
+async def catch_all(request: Request, path_name: str):
      return {
         "detail": "Not Found (Catch-All)", 
         "path": path_name,
+        "scope_path": request.scope.get("path"),
+        "scope_root_path": request.scope.get("root_path"),
+        "headers": dict(request.headers),
         "available_routes": [r.path for r in app.routes if hasattr(r, 'path')]
     }
 
