@@ -1,7 +1,17 @@
 from openai import OpenAI
-import config
+try:
+    import config
+except ImportError:
+    from . import config
 
-client = OpenAI(api_key=config.OPENAI_API_KEY)
+def get_client():
+    api_key = config.OPENAI_API_KEY
+    if not api_key:
+        print("Warning: OPENAI_API_KEY is not set.")
+        return None
+    return OpenAI(api_key=api_key)
+
+client = None
 
 def identify_missing_topics(alignments):
     """
@@ -47,6 +57,13 @@ Instructions:
 """
 
     try:
+        global client
+        if not client:
+            client = get_client()
+            
+        if not client:
+            return None
+
         response = client.chat.completions.create(
             model="gpt-5",
             messages=[
@@ -91,6 +108,13 @@ Instructions:
 """
 
     try:
+        global client
+        if not client:
+            client = get_client()
+        
+        if not client:
+             return len(mod_full_text), "\\n\\n"
+             
         response = client.chat.completions.create(
             model="gpt-5",
             messages=[

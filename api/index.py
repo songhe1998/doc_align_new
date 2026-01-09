@@ -7,17 +7,16 @@ import shutil
 import os
 import tempfile
 
-# Robust import handling for Vercel vs Local
-try:
-    from . import aligner
-    from . import augmenter
-    from . import utils
-except ImportError:
-    # Fallback if running as script
-    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-    import aligner
-    import augmenter
-    import utils
+import sys
+
+# Unconditionally add current directory to path to support all import styles
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+
+import aligner
+import augmenter
+import utils
 
 # Define the app
 app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")

@@ -1,7 +1,17 @@
 from openai import OpenAI
-import config
+try:
+    import config
+except ImportError:
+    from . import config
 
-client = OpenAI(api_key=config.OPENAI_API_KEY)
+def get_client():
+    api_key = config.OPENAI_API_KEY
+    if not api_key:
+        print("Warning: OPENAI_API_KEY is not set.")
+        return None
+    return OpenAI(api_key=api_key)
+
+client = None # Lazy init inside functions
 
 def align_documents(doc_a_content, doc_b_content):
     """
@@ -40,6 +50,13 @@ Rules:
 """
 
     try:
+        global client
+        if not client:
+            client = get_client()
+        
+        if not client:
+            return "Error: OPENAI_API_KEY not configured."
+
         response = client.chat.completions.create(
             model="gpt-5",
             messages=[
