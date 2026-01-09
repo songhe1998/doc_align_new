@@ -1,5 +1,6 @@
 import sys
 from fastapi import FastAPI, UploadFile, File, HTTPException, APIRouter
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -64,28 +65,44 @@ class AugmentRequest(BaseModel):
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     try:
+        # Vercel only allows writing to /tmp
         suffix = os.path.splitext(file.filename)[1]
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        
+        # Explicitly use /tmp for Vercel friendliness
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix, dir='/tmp') as tmp:
             shutil.copyfileobj(file.file, tmp)
             tmp_path = tmp.name
+        
         content = utils.read_file(tmp_path)
         os.unlink(tmp_path)
+        
         if content is None:
             raise HTTPException(status_code=400, detail="Could not read file")
         return {"filename": file.filename, "content": content}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        import traceback
+        error_msg = f"{str(e)}\n{traceback.format_exc()}"
+        print(error_msg)
+        # Return 500 with details for debugging
+        return JSONResponse(status_code=500, content={"detail": error_msg, "type": "UploadError"})
 
 @router.post("/align")
 async def align_docs(req: AlignRequest):
     try:
         raw_output = aligner.align_documents(req.target_text, req.mod_text)
         if not raw_output:
-            raise HTTPException(status_code=500, detail="LLM alignment failed")
+             return JSONResponse(status_code=500, content={"detail": "LLM alignment failed (returned None)", "type": "LLMError"})
+        
+        if isinstance(raw_output, str) and raw_output.startswith("Error:"):
+             return JSONResponse(status_code=500, content={"detail": raw_output, "type": "LLMConfigError"})
+
         alignments = aligner.parse_alignments(raw_output)
         return {"alignments": alignments}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        import traceback
+        error_msg = f"{str(e)}\n{traceback.format_exc()}"
+        print(error_msg)
+        return JSONResponse(status_code=500, content={"detail": error_msg, "type": "AlignError"})
 
 @router.post("/augment")
 async def augment_docs(req: AugmentRequest):
@@ -93,7 +110,10 @@ async def augment_docs(req: AugmentRequest):
         augmented_text = augmenter.augment_document(req.target_text, req.mod_text, req.alignments)
         return {"augmented_text": augmented_text}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        import traceback
+        error_msg = f"{str(e)}\n{traceback.format_exc()}"
+        print(error_msg)
+        return JSONResponse(status_code=500, content={"detail": error_msg, "type": "AugmentError"})
 
 @router.get("/demo-data")
 async def get_demo_data():
@@ -103,11 +123,11 @@ async def get_demo_data():
         project_root = os.path.dirname(base_dir) # parent of api/
         
         # Check standard location (local) or Vercel location
-        # On Vercel, sometimes CWD is /var/task
         paths_to_try = [
             os.path.join(project_root, "ndas"),
             os.path.join(os.getcwd(), "ndas"),
-            "ndas" # relative to CWD
+            "ndas",
+            "/var/task/ndas"
         ]
         
         found_target = None
@@ -116,27 +136,33 @@ async def get_demo_data():
         target_name = "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf"
         mod_name = "20150916-model-sharing-non-disclosure-agreement.pdf"
 
+        debug_logs = []
+        
         for p in paths_to_try:
             t = os.path.join(p, target_name)
             m = os.path.join(p, mod_name)
+            debug_logs.append(f"Checking {t}")
             if os.path.exists(t):
                 found_target = t
                 found_mod = m
                 break
         
-        # Fallback names without %20 if plain spaces used
         if not found_target:
              target_name_space = "1588052992CCTV Non Disclosure Agreement.pdf"
              for p in paths_to_try:
                 t = os.path.join(p, target_name_space)
                 m = os.path.join(p, mod_name)
+                debug_logs.append(f"Checking {t}")
                 if os.path.exists(t):
                     found_target = t
                     found_mod = m
                     break
         
         if not found_target:
-            return {"target": {"filename": "Error", "content": "Demo files not found on server"}, "mod": {"filename": "Error", "content": ""}}
+            return {
+                "target": {"filename": "Error", "content": f"Demo files not found. Searched: {debug_logs}"}, 
+                "mod": {"filename": "Error", "content": ""}
+            }
 
         target_content = utils.read_file(found_target)
         mod_content = utils.read_file(found_mod)
@@ -146,9 +172,12 @@ async def get_demo_data():
             "mod": {"filename": "Demo_Mod.pdf", "content": mod_content}
         }
     except Exception as e:
-        print(f"Demo Error: {str(e)}")
-        # Don't crash, return empty
-        return {"target": {"filename": "Error", "content": str(e)}, "mod": {"filename": "Error", "content": ""}}
+        import traceback
+        error_msg = f"{str(e)}\n{traceback.format_exc()}"
+        return {
+            "target": {"filename": "Error", "content": error_msg}, 
+            "mod": {"filename": "Error", "content": ""}
+        }
 
 # Include the router TWICE to handle both /api/path and /path
 # This solves the Vercel routing ambiguity
