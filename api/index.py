@@ -44,6 +44,30 @@ app.add_middleware(
 # Create a router for the core logic
 router = APIRouter()
 
+# GLOBAL SAFETY MIDDLEWARE
+@app.middleware("http")
+async def global_safety_net(request: Request, call_next):
+    try:
+        response = await call_next(request)
+        return response
+    except Exception as e:
+        import traceback
+        error_msg = f"CRITICAL MIDDLEWARE CATCH: {str(e)}\n{traceback.format_exc()}"
+        print(error_msg)
+        return JSONResponse(
+            status_code=200, # Return 200 so the browser APPs don't freak out, but content explains it
+            content={
+                "status": "critical_error",
+                "detail": error_msg,
+                "path": request.url.path
+            }
+        )
+
+# Simple Debug Endpoint (Bypass Router)
+@app.get("/api/debug-simple")
+async def debug_simple():
+    return {"message": "Direct app route works", "version": VERSION}
+
 @router.get("/health")
 async def health_check():
     status_code = 200 if MODULES_LOADED else 503
