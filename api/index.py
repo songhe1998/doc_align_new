@@ -172,41 +172,17 @@ async def get_demo_data_direct():
 async def health_check_direct():
     return await health_check()
 
-# ROOT DISPATCHER (The "Nuclear" Option)
-# If Vercel strips path to '/', we catch it here and route manually using ?_action=
-@app.api_route("/", methods=["GET", "POST"])
-async def root_dispatcher(request: Request):
-    qp = request.query_params
-    target = qp.get("_action", "")
-    
-    print(f"ROOT DISPATCH: target='{target}'")
+from fastapi.staticfiles import StaticFiles
 
-    if target == "demo-data":
-        return await get_demo_data_direct()
-    elif target == "health":
-        return await health_check_direct()
-    elif target == "align":
-        return JSONResponse(status_code=400, content={"detail": "Please use direct POST", "dispatch": "root"})
-    
-    return {
-        "detail": "Root Dispatcher (Path not found)",
-        "target_path": target,
-        "query_params": dict(qp),
-        "headers": dict(request.headers)
-    }
+# ... (Keep existing API routes)
 
-# Debug Catch-All
-@app.api_route("/{path_name:path}", methods=["GET", "POST"])
-async def catch_all(request: Request, path_name: str):
-     return {
-        "detail": "Not Found (Catch-All)", 
-        "path": path_name,
-        "scope_path": request.scope.get("path"),
-        "query_params": dict(request.query_params), 
-        "headers": dict(request.headers),
-        "available_routes": [r.path for r in app.routes if hasattr(r, 'path')]
-    }
-
+# Mount the React Frontend (must be last)
+# Check if build directory exists (it will on Render after build)
+frontend_dist = os.path.join(current_dir, "../frontend/dist")
+if os.path.exists(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="static")
+else:
+    print(f"WARNING: Frontend dist not found at {frontend_dist}. API only mode.")
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))

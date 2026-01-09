@@ -36,19 +36,10 @@ function App() {
   const [history, setHistory] = useState([]); // Stack of modText states
 
   // Helper to handle fetch errors
+  // Helper to handle fetch errors
   const fetchWithCheck = async (url, options) => {
-    // Client-Side Path Tunneling:
-    // Append the endpoint path as a query parameter to ensure it survives Vercel's aggressive stripping.
-    // url is like "/api/demo-data"
-    // We want "/api/demo-data?__path=demo-data"
-
-    // Extract the segment after /api/
-    const segment = url.split("/api/")[1];
-    const separator = url.includes("?") ? "&" : "?";
-    // Change param to _action to be safe
-    const tunneledUrl = segment ? `${url}${separator}_action=${segment}` : url;
-
-    const res = await fetch(tunneledUrl, options);
+    // Standard REST call (Render does not strip paths)
+    const res = await fetch(url, options);
     if (!res.ok) {
       const text = await res.text();
       let errorMsg = `Server Error ${res.status}`;
@@ -238,7 +229,7 @@ function App() {
       {/* Footer / Status */}
       <footer className="bg-white border-t px-6 py-2 text-xs text-gray-500 flex justify-between">
         <span>{alignments.length > 0 ? `Found ${alignments.length} aligned topics` : "Ready"}</span>
-        <span>v1.0.3-Debug</span>
+        <span>v2.0-Render</span>
       </footer>
     </div>
   );
