@@ -39,6 +39,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# PATH TUNNELING MIDDLEWARE
+# Fixes Vercel path stripping by restoring path from ?__path= query param
+@app.middleware("http")
+async def path_tunnel_middleware(request: Request, call_next):
+    # Check if we are receiving the tunneled path from vercel.json
+    qp = request.query_params
+    if "__path" in qp:
+        original_segment = qp["__path"]
+        # Reconstruct the full API path. 
+        # vercel.json captures everything AFTER /api/.
+        # So if source was /api/demo-data, __path is demo-data.
+        # We want to restore it to /api/demo-data to match our routes.
+        restored_path = f"/api/{original_segment}"
+        
+        # Override the Scope
+        request.scope["path"] = restored_path
+        
+        # Log for debugging (optional)
+        print(f"PATH FIXED: Tunneled '{original_segment}' -> '{restored_path}'")
+        
+    response = await call_next(request)
+    return response
+
 # Create a router
 router = APIRouter()
 
