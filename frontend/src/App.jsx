@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DocumentViewer from './DocumentViewer';
 
-const API_URL = "http://localhost:8000";
+const API_URL = "";
 
 const HIGHLIGHT_STYLES = [
   { bg: "bg-red-200", border: "border-red-500" },
