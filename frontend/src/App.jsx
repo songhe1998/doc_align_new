@@ -48,9 +48,6 @@ function App() {
     // Change param to _action to be safe
     const tunneledUrl = segment ? `${url}${separator}_action=${segment}` : url;
 
-    // DEBUG ALERT: Verify frontend is sending it
-    alert(`Debug Fetching: ${tunneledUrl}`);
-
     const res = await fetch(tunneledUrl, options);
     if (!res.ok) {
       const text = await res.text();
