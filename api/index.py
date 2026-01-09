@@ -140,27 +140,43 @@ async def get_demo_data():
 app.include_router(router, prefix="/api")
 app.include_router(router)
 
-# Debug 404 Handler - Critical for routing diagnosis
-@app.exception_handler(404)
-async def custom_404_handler(request: Request, exc):
-    # Flatten route list for debugging
-    routes = []
-    for route in app.routes:
-        if hasattr(route, "path"):
-            routes.append(route.path)
-        elif hasattr(route, "path_format"):
-             routes.append(route.path_format)
-    
-    return JSONResponse(
-        status_code=404,
-        content={
-            "detail": "Not Found (Debug Mode)",
-            "requested_path": request.url.path,
-            "method": request.method,
-            "root_path": request.scope.get("root_path", ""),
-            "registered_routes": routes
-        }
-    )
+# ROUTING FIX:
+# The Sanity Check worked with @app.get("/api/demo-data").
+# The Router version failed (saw path '/').
+# We will explicitly mount routes on 'app' with the full /api prefix to match the success case.
+
+@app.post("/api/upload")
+async def upload_file_direct(file: UploadFile = File(...)):
+    return await upload_file(file)
+
+@app.post("/api/align")
+async def align_docs_direct(req: AlignRequest):
+    return await align_docs(req)
+
+@app.post("/api/augment")
+async def augment_docs_direct(req: AugmentRequest):
+    return await augment_docs(req)
+
+@app.get("/api/demo-data")
+async def get_demo_data_direct():
+    return await get_demo_data()
+
+# Keep the health check which works
+@app.get("/api/health")
+async def health_check_direct():
+    return await health_check()
+
+# Also keep the function-based versions for internal logic or other mounts, 
+# but the @app. verb ones above are the primary public entrypoints.
+
+# Debug Catch-All (From Sanity Check success)
+@app.api_route("/{path_name:path}", methods=["GET", "POST"])
+async def catch_all(path_name: str):
+     return {
+        "detail": "Not Found (Catch-All)", 
+        "path": path_name,
+        "available_routes": [r.path for r in app.routes if hasattr(r, 'path')]
+    }
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
