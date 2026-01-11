@@ -22,6 +22,7 @@ try:
     import aligner
     import augmenter
     import utils
+    import config
     MODULES_LOADED = True
 except Exception as e:
     import traceback
@@ -61,12 +62,21 @@ router = APIRouter()
 @router.get("/health")
 async def health_check():
     import openai, httpx, pydantic
+    
+    api_key_status = False
+    try:
+        import config
+        api_key_status = bool(config.OPENAI_API_KEY)
+    except:
+        pass
+
     return {
         "status": "ok" if MODULES_LOADED else "error", 
         "message": "LegalAlign API is running" if MODULES_LOADED else "Safe Mode (Modules Failed)",
         "modules_loaded": MODULES_LOADED,
         "import_error": IMPORT_ERROR,
         "version": VERSION,
+        "api_key_configured": api_key_status,
         "libs": {
             "openai": openai.__version__,
             "httpx": httpx.__version__,
