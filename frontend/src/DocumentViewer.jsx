@@ -35,11 +35,69 @@ function DocumentViewer({ title, text, highlights = [], onTextChange }) {
         highlights.forEach(h => {
             if (!h.text || h.text === "N/A") return;
 
-            // Find all occurrences? Or just first? 
-            // Let's do first for now as per plan.
-            const idx = text.indexOf(h.text);
+            // Robust Token-Based Matching Strategy
+            // 1. Exact match attempt first (fastest)
+            let idx = text.indexOf(h.text);
+            let length = h.text.length;
+
+            if (idx === -1) {
+                // 2. Tokenize both text and snippet to find word sequence
+                // This ignores whitespace, punctuation, and weird chars
+                const tokenize = (str) => {
+                    const tokens = [];
+                    // Match words (alphanumeric) and keep track of their indices
+                    const regex = /[a-zA-Z0-9]+/g;
+                    let match;
+                    while ((match = regex.exec(str)) !== null) {
+                        tokens.push({ word: match[0], index: match.index, end: match.index + match[0].length });
+                    }
+                    return tokens;
+                };
+
+                const docTokens = tokenize(text);
+                const snippetTokens = tokenize(h.text);
+
+                if (snippetTokens.length > 0) {
+                    // Search for the sequence of snippet words in doc words
+                    // Simple optimization: find occurrences of first word, then check rest
+                    const firstWord = snippetTokens[0].word;
+
+                    for (let i = 0; i < docTokens.length; i++) {
+                        if (docTokens[i].word === firstWord) {
+                            // Check potential match starting here
+                            let matchFound = true;
+                            if (i + snippetTokens.length > docTokens.length) {
+                                matchFound = false;
+                            } else {
+                                for (let j = 1; j < snippetTokens.length; j++) {
+                                    if (docTokens[i + j].word !== snippetTokens[j].word) {
+                                        matchFound = false;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (matchFound) {
+                                const startToken = docTokens[i];
+                                const endToken = docTokens[i + snippetTokens.length - 1];
+                                idx = startToken.index;
+                                length = endToken.end - startToken.index;
+                                break; // Stop at first match
+                            }
+                        }
+                    }
+                }
+            }
+
             if (idx !== -1) {
-                ranges.push({ start: idx, end: idx + h.text.length, style: h.style, topic: h.topic });
+                ranges.push({
+                    start: idx,
+                    end: idx + length,
+                    style: h.style,
+                    topic: h.topic
+                });
+            } else {
+                // console.warn("STILL FAILED TO MATCH snippet");
             }
         });
 

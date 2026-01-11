@@ -1,4 +1,5 @@
 import sys
+import config
 from fastapi import FastAPI, UploadFile, File, HTTPException, APIRouter, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -136,36 +137,41 @@ async def augment_docs(req: AugmentRequest):
 @app.get("/demo-data")
 async def get_demo_data():
     """
-    Returns static demo data to avoid filesystem reads on Vercel.
+    Returns a random PDF from the ndas folder for testing.
     """
-    try:
-        target_content = (
-            "NON-DISCLOSURE AGREEMENT\n\n"
-            "This Non-Disclosure Agreement (the \"Agreement\") is entered into by and between "
-            "Company A (\"Discloser\") and Company B (\"Recipient\").\n\n"
-            "1. Confidential Information\n"
-            "Definition: 'Confidential Information' means all non-public information disclosed by Discloser, "
-            "whether written or oral, that is designated as confidential or effectively should be treated as such.\n\n"
-            "2. Obligations\n"
-            "Recipient agrees to hold Confidential Information in strict confidence and use it only for the Purpose."
-        )
+    import random
+    import glob
+    
+    # Path to ndas
+    nda_dir = os.path.join(current_dir, "../ndas")
+    
+    filename = "Standard NDA (Template)"
+    content = "This is a fallback. No PDFs found in ndas folder."
+    
+    if os.path.exists(nda_dir):
+        files = glob.glob(os.path.join(nda_dir, "*.pdf"))
+        # Filter out files that start with ._ or other system temp files
+        files = [f for f in files if not os.path.basename(f).startswith("._")]
         
-        mod_content = (
-            "CONFIDENTIALITY AGREEMENT\n\n"
-            "Parties: Company A and Company B.\n\n"
-            "1. Definition of Confidential Info\n"
-            "'Confidential Information' refers to any proprietary data shared between the parties.\n\n"
-            "2. Duty of Care\n"
-            "receiving party shall protect the information with reasonable care."
-        )
+        if files:
+            selected_file = random.choice(files)
+            fname = os.path.basename(selected_file)
+            print(f"Loading random demo file: {fname}")
+            
+            try:
+                # Read content using utils
+                text = utils.read_file(selected_file)
+                if text:
+                    filename = fname
+                    content = text
+            except Exception as e:
+                print(f"Error reading {fname}: {e}")
 
-        return {
-            "target": {"filename": "Demo_Target_Static.txt", "content": target_content},
-            "mod": {"filename": "Demo_Mod_Static.txt", "content": mod_content}
-        }
-    except Exception as e:
-        import traceback
-        return JSONResponse(status_code=500, content={"detail": f"{str(e)}\n{traceback.format_exc()}", "type": "DemoDataError"})
+    # Return nested structure expected by App.jsx
+    return {
+        "target": {"filename": filename, "content": content},
+        "mod": {"filename": f"{filename} (Copy)", "content": content}
+    }
 
 @app.post("/api/upload")
 async def upload_file_direct(file: UploadFile = File(...)):

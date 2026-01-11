@@ -213,23 +213,48 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex gap-4 p-4 overflow-hidden">
-        <DocumentViewer
-          title={targetFile || "Target Document"}
-          text={targetText}
-          highlights={targetHighlights}
-        />
-        <DocumentViewer
-          title={modFile || "Mod Document"}
-          text={modText}
-          highlights={modHighlights}
-        />
+      <main className="flex-1 flex gap-4 p-4 overflow-hidden relative">
+        {/* Document Viewers */}
+        <div className="flex-1 flex gap-4 overflow-hidden">
+          <DocumentViewer
+            title={targetFile || "Target Document"}
+            text={targetText}
+            highlights={targetHighlights}
+          />
+          <DocumentViewer
+            title={modFile || "Mod Document"}
+            text={modText}
+            highlights={modHighlights}
+          />
+        </div>
+
+        {/* Legend Sidebar - Only show when we have alignments */}
+        {alignments.length > 0 && (
+          <div className="w-64 bg-white border rounded-lg shadow-sm flex flex-col overflow-hidden">
+            <div className="px-4 py-2 border-b bg-gray-50 font-semibold text-gray-700 text-sm">
+              Aligned Topics
+            </div>
+            <div className="flex-1 overflow-auto p-2 space-y-2">
+              {alignments.map((a, i) => {
+                const style = HIGHLIGHT_STYLES[i % HIGHLIGHT_STYLES.length];
+                return (
+                  <div key={i} className={`p-2 rounded-md border text-xs ${style.bg} ${style.border} bg-opacity-50`}>
+                    <div className="font-bold text-gray-800 mb-1">{a.topic}</div>
+                    <div className="text-gray-600 truncate" title={a.doc_a}>
+                      A: {a.doc_a.substring(0, 40)}...
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Footer / Status */}
       <footer className="bg-white border-t px-6 py-2 text-xs text-gray-500 flex justify-between">
         <span>{alignments.length > 0 ? `Found ${alignments.length} aligned topics` : "Ready"}</span>
-        <span>v2.0-Render</span>
+        <span>v2.1-Legend</span>
       </footer>
     </div>
   );
