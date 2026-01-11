@@ -21,6 +21,7 @@ VERSION = "1.0.2-Restored"
 
 try:
     import aligner
+    import aligner_anchors
     import augmenter
     import utils
     import config
@@ -88,6 +89,7 @@ async def health_check():
 class AlignRequest(BaseModel):
     target_text: str
     mod_text: str
+    strategy: str = "standard"
 
 class AugmentRequest(BaseModel):
     target_text: str
@@ -115,15 +117,28 @@ async def upload_file(file: UploadFile = File(...)):
 @app.post("/align")
 async def align_docs(req: AlignRequest):
     try:
-        raw_output = aligner.align_documents(req.target_text, req.mod_text)
-        if not raw_output:
-             return JSONResponse(status_code=500, content={"detail": "LLM alignment returned empty response", "type": "EmptyResponse"})
-        
-        alignments = aligner.parse_alignments(raw_output)
+        if req.strategy == "anchors":
+            print("Using Experimental Anchor Strategy")
+            result = aligner_anchors.align_documents_anchors(req.target_text, req.mod_text)
+            if isinstance(result, str) and result.startswith("Error"):
+                 return JSONResponse(status_code=500, content={"detail": result, "type": "AlignerError"})
+            
+            # Anchor aligner already returns list of dicts or raises
+            alignments = result
+            
+        else:
+            # Standard Strategy
+            alignment_text = aligner.align_documents(req.target_text, req.mod_text)
+            
+            if not alignment_text or alignment_text.startswith("Error"):
+                return JSONResponse(status_code=500, content={"detail": alignment_text or "Unknown Error", "type": "AlignerError"})
+            
+            alignments = aligner.parse_alignments(alignment_text)
+            
         return {"alignments": alignments}
     except Exception as e:
         import traceback
-        return JSONResponse(status_code=500, content={"detail": f"LLM Error: {str(e)}", "type": "LLMError", "trace": traceback.format_exc()})
+        return JSONResponse(status_code=500, content={"detail": f"{str(e)}\n{traceback.format_exc()}", "type": "AlignerError", "trace": traceback.format_exc()})
 
 @app.post("/augment")
 async def augment_docs(req: AugmentRequest):
