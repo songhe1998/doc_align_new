@@ -16,14 +16,19 @@ def run_augmentation_test(file_target, file_mod):
         return
 
     print("Step 1: Aligning documents...")
-    alignment_output = aligner.align_documents(content_target, content_mod)
-    print(f"Raw Alignment Output:\n{alignment_output}\n")
+    # Use standard aligner by default, but let's test anchors roughly?
+    # Actually, for this test let's stick to standard alignment for simplicity unless we want to test the full new pipeline.
+    # Let's switch to anchor alignment to verify compatibility.
+    from api import aligner_anchors
+    print("  Using Anchor Strategy for Test...")
+    alignments = aligner_anchors.align_documents_anchors(content_target, content_mod)
+    # print(f"Raw Alignment Output:\n{alignment_output}\n") # Anchor aligner returns object directly
     
-    if not alignment_output:
-        print("Failed to get alignment.")
+    if not alignments or isinstance(alignments, str):
+        print(f"Failed to get alignment: {alignments}")
         return
         
-    alignments = aligner.parse_alignments(alignment_output)
+    # alignments = aligner.parse_alignments(alignment_output) # Not needed for anchors
     print(f"Parsed {len(alignments)} alignments.")
     
     print("Step 2: Augmenting document...")

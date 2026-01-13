@@ -36,6 +36,7 @@ function App() {
   const [history, setHistory] = useState([]); // Stack of modText states
 
   const [useAnchors, setUseAnchors] = useState(false); // Experimental Toggle
+  const [augmentHighlights, setAugmentHighlights] = useState([]); // Store inserted clauses for highlighting
 
   // Helper to handle fetch errors
   const fetchWithCheck = async (url, options) => {
@@ -130,6 +131,16 @@ function App() {
         body: JSON.stringify({ target_text: targetText, mod_text: modText, alignments: alignments, strategy: useAnchors ? "anchors" : "standard" })
       });
       setModText(data.augmented_text);
+
+      // Handle Augmentation Highlights
+      if (data.insertions) {
+        const newHighlights = data.insertions.map(ins => ({
+          text: ins.text,
+          style: { bg: "bg-green-100", border: "border-green-500" },
+          topic: "Augmented: " + ins.topic
+        }));
+        setAugmentHighlights(newHighlights);
+      }
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -212,7 +223,8 @@ function App() {
       text: a.doc_b,
       style: HIGHLIGHT_STYLES[a.originalIndex % HIGHLIGHT_STYLES.length],
       topic: a.topic
-    }));
+    }))
+    .concat(augmentHighlights); // Merge augmented highlights
 
   return (
     <div className="h-screen flex flex-col bg-gray-100 text-gray-900 font-sans">

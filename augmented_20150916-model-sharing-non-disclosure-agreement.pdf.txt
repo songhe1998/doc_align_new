@@ -1,12 +1,10 @@
  
- 
-NON-DISCLOSURE CERTIFICATE 
+ NON-DISCLOSURE CERTIFICATE 
  
  
 I hereby certify my understanding that access to Confidential Information is provided to me 
 pursuant to the terms and conditions of the Non-Disclosure Agreement for the Exchange of 
-Energy Management System Model Data  dated as of the _ 11th__ day of ___ August__
-_____, 
+Energy Management System Model Data  dated as of the _ 11th__ day of ___ August_______, 
 20_15_ by and among PJM Interconnection, L.L.C. (“PJM”) and the PJM Transmission Owner 
 (“Transmission Owner”).  I certify that I have been given a copy of and have read the Non-
 Disclosure Agreement, and I agree to be bound by it.  I understand that the contents of the 
@@ -15,12 +13,12 @@ copies or discloses Confidential Information shall not be disclosed to anyone ot
 accordance with the Non-Disclosure Agreement. 
  
  
-       By_________________________________ 
-       Print Name:__________________________ 
-       Title:_______________________________ 
-       Employed By:________________________ 
-       Representing:________________________ 
-       Date Signed_________________________ 
+       By_________________________________  
+       Print Name: __________________________  
+       Title:_______________________________  
+       Employed By: ________________________  
+       Representing: ________________________  
+       Date Signed_________________________  
  
  
  
@@ -32,38 +30,36 @@ FOR THE EXCHANGE OF ENERGY MANAGEMENT SYSTEM MODEL DATA
 This Non-Disclosure Agreement (“Agreement”) is made this _ 11th__ day of 
 ___August____________, 20 15__ by and between PJM Interconnection, L.L.C. (“PJM”), a 
 Delaware limited liability company, with offices at 2750 Monroe Boulevard, Audubon, PA 
-19403 and ___________ __________, the Undersigned Transmission Owner (“Transmission 
+19403 and ___________ __________,  the Undersigned Transmission Owner (“Transmission 
 Owner”) (hereinafter PJM and the Undersigned Transmission Owner are collectively referred to 
 as “Parties” and individually as a “Party). 
  
 RECITALS: 
  
-WHEREAS, PJM serves as the Regional Transmission Organization with reliability 
+WHEREAS , PJM serves as the Regional Transmission Organization with reliability 
 and/or functional control responsibilities over transmission systems involving all or parts of 
 thirteen states and the District of Columbia, and operates and oversees wholesale markets for 
 electricity pursuant to the requirements of the PJM Open Access Transmission Tariff (“PJM 
 Tariff”) and the Amended and Restated Operating Agreement of PJM Interconnection, L.L.C. 
 (“Operating Agreement”); and 
  
-WHEREAS, the Transmission Owners recognize that, while PJM serves as the Regiona l 
+WHEREAS, the Transmission Owner s recognize that, while PJM serves as the Regiona l 
 Transmission Organization in the PJM region, the Transmission Owners within the PJM region 
  
- 
-perform certain Transmission Functions, as Transmission Functions is defined in section 18 
+ perform certain Transmission Functions, as Transmission Functions is defined in section 18 
 C.F.R. § 358 of the FERC rules and regulations,  with respect to their individual transmission 
 systems and distribution systems.  
  
-WHEREAS, the Parties desire to enter into this Agreement to protect and maintain from 
+WHEREAS , the Parties desire to enter into this Agreement to protect and maintain from 
 disclosure to third parties the Confidential Information that will be exchanged to facilitate 
 reliable operations; and  
  
- WHEREAS, this Agreement is a statement of the conditions and requirements, 
+ WHEREAS,  this Agreement is a statement of the conditions and requirements, 
 consistent with the requirements of the Operating Agreement, whereby a Disclosing Party may 
 provide Confidential Information to a Party for the purpose of the Party executing its 
-Transmission Functions.
+Transmission Functions.  
  
- 
- NOW, THEREFORE, in consideration of the mutual promises made herein intending to 
+ NOW, THEREFORE , in consideration of the mutual promises made herein intending to 
 be legally bound, the Parties agree as follows: 
  
 A. Definitions 
@@ -74,52 +70,42 @@ modified or otherwise supplemented, as in effect from time to time.
 2. “Authority” means a federal, state or local court or federal or state administrative 
 agency of competent jurisdiction. 
  
-3.
- “Commission” or “FERC” means the Federal Energy Regulatory Commission or 
+3. “Commission” or “FERC” means the Federal Energy Regulatory Commission or 
 any successor federal agency or commission. 
  
-4.
- “Confidential Information” means a Party’s energy management system model 
+4. “Confidential Information” means a Party’s energy management system model 
 data provided or to be provided by a Disclosing Party to another Party.  
 Confidential Information shall be disclosed only to Reviewing Representatives 
-and only used to enable a Party 
-to perform its Transmission Functions. 
+and only used to enable a Party to perform its Transmission Functions.  
  
 5. “Disclosing Party” means the Party furnishing the other Parties with Confidential 
 Information. 
  
-6.
- “Law” means any applicable constitutional provision, statute, act, code, law, 
+6. “Law” means any applicable constitutional provision, statute, act, code, law, 
 regulation, rule, ordinance, order, decree, ruling, proclamation, resolution, 
 judgment, decision, declaration or interpretive or advisory opinion of an 
 Authority. 
  
-7.
- “Non-Disclosure Certificate” means the certificate annexed hereto by which 
+7. “Non-Disclosure Certificate” means the certificate annexed hereto by which 
 Reviewing Representatives seeking access to Confidential Information shall 
 certify their understanding that such access to Confidential Information is 
 provided pursuant to the terms and conditions of this Agreement and that each 
-Reviewing Representative 
-has read this Agreement and agrees to be bound by it. 
+Reviewing Representative has read this Agreement and agrees to be bound by it. 
  
  
- 
-8. “Notes” or “Notes of Confidential Information” means memoranda, handwritten 
+ 8. “Notes” or “Notes of Confidential Information” means memoranda, handwritten 
 notes, or other form of information (including electronic form) which copies or 
 discloses Confidential Information. 
  
-9.
- “Reviewing Representative” means an employee of a Party who has signed or 
+9. “Reviewing Representative” means an employee of a Party who has signed or 
 electronically signed a Non-Disclosure Certificate and who is a principal, partner, 
-officer, director, employee, agent and other representative of a Party.
-  Reviewing 
+officer, director, employee, agent and other representative of a Party.   Reviewing 
 Representative may include a person whose duties include Competitive Duties so 
 long as such Reviewing Representative’s receipt and use of Confidential 
 Information is not prohibited conduct under FERC’s rules, including Standards of 
 Conduct. 
  
-10.
- “Standards of Conduct” means the standards as set forth in 18 C.F.R. Part 358 as 
+10. “Standards of Conduct” means the standards as set forth in 18 C.F.R. Part 358 as 
 amended or superseded from time to time 
  
 11. “Transmission Owner” shall have the meaning defined in the PJM Tariff. 
@@ -130,17 +116,15 @@ A Third Party Request shall include, but not limited to, any subpoena, discovery
 request, or other request for Confidential Information made by any entity not a 
 Party to this Agreement. 
  
-13.
- “Undersigned Transmission Owners” means the Transmission Owners who are 
-signatories to this Agreement.
- 
+13. “Undersigned Transmission Owners” means the Transmission Owners who are 
+signatories to this Agreement.  
  
 B. Confidential Information - General Non-Disclosure Provisions 
  
 The following provisions govern the use of Confidential Information under this 
 Agreement. 
  
- 1.  Disclosure of Confidential Information.   A Disclosing Party may disclose or 
+ 1. Disclosure of Confidential Information.   A Disclosing Party may disclose or 
 discuss a Party’s Confidential Information with a ny other Party to this Agreement.  The 
 disclosure of the Confidential Information is subject to the terms and conditions stated herein.  
 Each Party acknowledges the importance to the other Parties of preserving the confidentiality of 
@@ -149,16 +133,14 @@ herein in furnishing Confidential Information to a Party.  Each Party shall safe
 Confidential Information at least to the same extent that it would its own confidential 
 information. 
  
- 2.  Reviewing Representative.  A Reviewing Representative shall not have access to 
+ 2. Reviewing Representative.  A Reviewing Representative shall not have access to 
 any Confidential Information unless that Reviewing Representative is required to have the 
 information in order to carry out that person’s Transmission Functions responsibilities and has 
 executed the attached Non-Disclosure Certificate.  The Reviewing Representative shall deliver a 
-copy of his or her executed Non-Disclosure Certificate to PJM.  
-A Reviewing Representative 
+copy of his or her executed Non-Disclosure Certificate to PJM.   A Reviewing Representative 
 shall not use the Confidential Information or any portion thereof to give any Party or a 
  
- 
-competitor of any Party a competitive or commercial advantage.  A Reviewing Representative 
+ competitor of any Party a competitive or commercial advantage.  A Reviewing Representative 
 may make copies or Notes of Confidential Information that shall be subject to this Agreement.  
 In the event a Reviewing Representative ceases to be employed or engaged by a Party, or is 
 employed, retained, or given duties that include Competitive Duties, (i) the Reviewing 
@@ -170,11 +152,11 @@ Information, or transfer the information to another Reviewing Representative of 
 Party shall advise the Reviewing Representatives that Confidential Information is confidential 
 and shall be treated as confidential in accordance with this Agreement. 
  
- 3.  List of Reviewing Representatives.  PJM shall receive and maintain copies of all 
+ 3. List of Reviewing Representatives.  PJM shall receive and maintain copies of all 
 Non-Disclosure Certificates executed by the Party’s Reviewing Representatives, and shall 
 maintain a list of the Reviewing Representatives.  
  
- 4.  Discussions of Confidential Information.  Parties and Reviewing Representatives 
+ 4. Discussions of Confidential Information.  Parties and Reviewing Representatives 
 who have executed this Agreement or a Non-Disclosure Certificate may discuss Confidential 
 Information with other Parties and Reviewing Representatives who have executed this 
 Agreement or a Non-Disclosure Certificate. 
@@ -198,15 +180,14 @@ legal counsel advises PJM (and of which PJM shall, in turn, advise any Disclosin
 writing is legally required to be furnished, and to exercise their best efforts to obtain assurance 
 that confidential treatment will be accorded to such Confidential Information.   
  
- 7 . Permitted Limited Disclosure of Confidential Information.  Notwithstanding 
+ 7. Permitted Limited Disclosure of Confidential Information.  Notwithstanding 
 anything to the contrary in this Agreement, a Party may disclose Confidential Information to the 
 extent but only to the extent: (a) approved by the Disclosing Party in writing; or (b) required by 
 Law or an Authority, but only if: (i) the Party attempts to notify the Disclosing Party as far in 
 advance as practicable prior to making disclosure of its intent to disclose Confidential 
 Information and of the content and mode of communication of the disclosure; and (ii) the Party 
  
- 
-cooperates with the Disclosing Party's efforts to obtain a protective order protecting the 
+ cooperates with the Disclosing Party's efforts to obtain a protective order protecting the 
 Confidential Information from disclosure.  In addition, if disclosure is required by Law or 
 Authority, the Party to the extent practicable (and permitted by law), will (1) promptly notify the 
 Disclosing Party of the circumstances surrounding the requirement, (2) consult with the 
@@ -227,7 +208,7 @@ waiver of the protections under this Agreement or the confidentiality of such Co
 Information and such Confidential Information shall continue to be treated as confidential in 
 accordance with this Agreement. 
  
- 8 . Ownership and Use of Confidential Information.  All Confidential Information 
+ 8. Ownership and Use of Confidential Information.  All Confidential Information 
 delivered by a Disclosing Party to a Party pursuant to this Agreement shall be and remain the 
 property of the Disclosing Party, and such Confidential Information shall be promptly returned to 
 the Disclosing Party upon request.  That portion of the Confidential Information that may be 
@@ -239,7 +220,7 @@ Reviewing Party’s Transmission Functions.  Once the Party no longer requires t
 information for the purpose of performing its Transmission Functions, the Confidential 
 Information shall be returned or destroyed in accordance with this Agreement. 
  
- 9 . Identification of Confidential Information .  Confidential Information that is in 
+ 9. Identification of Confidential Information .  Confidential Information that is in 
 writing or other tangible form (including electronic form) shall be subject to this Agreement only 
 if it is clearly marked as "Confidential" when disclosed by the Disclosing Party to a Party.  
 Confidential Information that is provided orally shall be subject to this Agreement only if its 
@@ -253,12 +234,10 @@ inadvertent disclosure.  Confidential Information excludes any information that:
 Disclosing Party has not specifically notified the Party is confidential; (ii) becomes available to 
 the Party or the Reviewing Representative on a non-confidential basis from a source other than:  
  
- 
-(a) the Disclosing Party, or other person acting on behalf of the Disclosing Party; or (b) a Party 
+ (a) the Disclosing Party, or other person acting on behalf of the Disclosing Party; or (b) a Party 
 who has confidentiality obligations to the Disclosing Party; (iii) is or becomes generally 
 available to the public other than as a result of a disclosure by the Party or its Reviewing 
-Representatives; (iv) was previously known to the Party or its Reviewing Representative 
-free and 
+Representatives; (iv) was previously known to the Party or its Reviewing Representative free and 
 clear of any obligation to keep it confidential; (v) is disclosed to third parties by the Disclosing 
 Party without restriction or obligation of confidentiality; (vi) is developed independently by the 
 Party as evidenced by documentation made in the ordinary course of business by the Party; or 
@@ -267,7 +246,7 @@ Information.
  
  10 . Term of Agreement.  This Agreement shall remain in effect unless and until 
 terminated by the Parties.  The obligations of the Parties under this Agreement shall continue and 
-survive the Transmission Functions for which the Confidential Information was disclosed and 
+survive the Transmission Function s for which the Confidential Information was disclosed and 
 shall remain binding under this Agreement unless disclosure is permitted under Section 8 or 
 required by Law or Authority.  Nothing herein shall be construed to limit the term of protection 
 of Confidential Information otherwise protected by Law or Authority. 
@@ -294,30 +273,22 @@ other intellectual property rights, or other rights of third persons.
 legal obligation of any kind whatsoever by virtue of this Agreement. 
  
  14 . Compliance with Law.  Nothing stated herein shall be construed to require any 
-Party to take any action in violation of applicable Laws or regulations.
-
-Audit. If the Disclosing Party suspects a violation of this Agreement, then upon reasonable notice the Receiving Party shall permit the Disclosing Party, or its authorized representative, to conduct an audit reasonably necessary to verify compliance with this Agreement. The Receiving Party shall cooperate with the Disclosing Party in connection with any such audit. The burden of rebutting any such suspicion shall rest with the Receiving Party.
- 
+Party to take any action in violation of applicable Laws or regulations. 
  
  15 . Miscellaneous. 
  
 a. Binding Effect.  The obligations of the Parties shall be binding on and 
 inure to the benefit of their respective heirs, successors, assigns, and 
-affiliates.
-
-Except in the event of an amalgamation or merger with, or a takeover by, a third party of such Party’s business, neither Party may assign or transfer this Agreement or any of its rights or obligations hereunder without the prior written consent of the other Party.
+affiliates. 
  
- 
- 
- 
+  
 b. Integration.  This Agreement constitutes the Parties’ entire agreement 
 concerning the subject matter hereof and may be amended or modified 
 only by a subsequent agreement in writing.  A waiver, discharge, 
 amendment, modification or termination of this Agreement or any 
 provision hereof, shall be valid and effective only if in writing and 
 executed by all Parties.  A written waiver of a right, remedy or obligation 
-u
-nder a provision of this Agreem ent will no t constitute a waiver of the 
+under a provision of this Agreem ent will not constitute a waiver of the 
 provision itself, a waiver of any succeeding right, remedy or obligation 
 under the provision, or a waiver of any other right, remedy, or obligation 
 under this Agreement.  Any delay or failure by a Party in enforcing any 
@@ -325,8 +296,7 @@ obligation or in exercising any right or remedy shall not operate as a
 waiver of it or affect that party’s right later to enforce the obligation or 
 exercise the right or remedy and a single or partial exercise of a right of 
 remedy by a Party does not preclude any further exercise of it or the 
-exercise of 
-any other right or remedy of that Party. 
+exercise of any other right or remedy of that Party. 
  
 c. Severability.  If any provision of this Agreement is held by an Authority to 
 be invalid, void or unenforceable in any respect or with respect to 
@@ -345,7 +315,10 @@ under this Agreement shall be valid only if in writing and delivered
 personally, by mail, by facsimile or by electronic mail, and sent by the 
 sender to each other Party at its address or number listed for a Party’s 
 Reviewing Representative.  A validly given notice, consent or approval 
-will be effective when received if delivered. 
+will be effective when received if delivered.
+
+The Party receiving Confidential Information acknowledges that any disclosure or use of Confidential Information in violation of this Agreement could cause irreparable harm to the Party disclosing such information, including the risk of loss of life or limb and damage to property, for which monetary damages may be difficult to ascertain or may be inadequate. Accordingly, the Party receiving Confidential Information agrees that the Party disclosing such information will have the right, in addition to any other rights and remedies, to seek injunctive relief for violations of this Agreement.
+ 
  
 f. No Assignment.  Each Party recognizes that breach of its obligations 
 hereunder shall cause irreparable harm to the Disclosing Party and agrees 
@@ -358,8 +331,7 @@ Party or of its Reviewing Representative.  The Party shall not be liable for
 special, incidental, consequential and indirect damages, court costs and 
 attorneys’ fees in connection with any breach hereunder. 
  
- 
- 
+  
 g. Governing Law.  This Agreement shall be interpreted, construed and 
 governed by the Laws of the State of Delaware exclusive of the conflicts 
 of laws provisions. 
@@ -380,15 +352,9 @@ requirements of this Agreement, subject to such withdrawing party
 certifying in writing prior the effectiveness of such withdrawal that:  (i) it 
 has returned or destroyed all Confidential Information then in its 
 possession; and (ii) it will remain bound by the disclosure limitations 
-imposed by this Agreement.
-
-No Agency or Partnership. The Parties do not intend that any agency or partnership relationship be created between them by this Agreement.
- 
+imposed by this Agreement. 
  
  
 IN WITNESSS WHEREOF, the Parties execute this Agreement to be effective as of the 
 date first written above. 
  
-
-
-Dispute Resolution; Arbitration. Any dispute or difference arising out of or in connection with this Agreement shall be resolved amicably by the Parties through mutual negotiations. Any dispute or difference not so settled shall be referred to arbitration by a sole arbitrator. The arbitration shall be conducted in accordance with the UNCITRAL Arbitration Rules in effect on the date of this Agreement. Arbitration proceedings shall be held in India and shall be conducted in English. The award of the arbitral tribunal shall be final and binding on the Parties. The costs of the arbitration shall be borne by the Parties themselves unless otherwise ordered by the tribunal.

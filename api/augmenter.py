@@ -65,7 +65,7 @@ Instructions:
             return None
 
         response = client.chat.completions.create(
-            model="gpt-5",
+            model="gpt-4-turbo-preview",
             messages=[
                 {"role": "system", "content": "You are a precise legal drafter."},
                 {"role": "user", "content": prompt}
@@ -113,10 +113,10 @@ Instructions:
             client = get_client()
         
         if not client:
-             return len(mod_full_text), "\\n\\n"
+             return len(mod_full_text), "\n\n"
              
         response = client.chat.completions.create(
-            model="gpt-5",
+            model="gpt-4-turbo-preview",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": prompt}
@@ -130,13 +130,27 @@ Instructions:
             if snippet.startswith('"') and snippet.endswith('"'):
                 snippet = snippet[1:-1]
             
-            # Find snippet in text
+            # 1. Try Exact Search
             idx = mod_full_text.find(snippet)
             if idx != -1:
-                # Insert after the snippet
-                return idx + len(snippet), "\n\n" # Return index and prefix
-            else:
-                print(f"Could not find snippet '{snippet}' in text.")
+                return idx + len(snippet), "\n\n"
+            
+            # 2. Try Fuzzy Search
+            try:
+                from fuzzysearch import find_near_matches
+                # Allow some errors relative to snippet length
+                max_dist = min(5, int(len(snippet) * 0.2)) 
+                matches = find_near_matches(snippet, mod_full_text, max_l_dist=max_dist)
+                
+                if matches:
+                    print(f"DEBUG: Found insertion point via fuzzy match: {matches[0]}")
+                    return matches[0].end, "\n\n"
+            except ImportError:
+                 print("Warning: fuzzysearch not installed, skipping fuzzy insertion.")
+                 
+            # 3. Fallback: Split snippet?
+            # If still nothing, warn and append
+            print(f"Could not find snippet '{snippet}' in text (Exact or Fuzzy).")
                 
     except Exception as e:
         print(f"Error determining insertion point: {e}")
@@ -159,6 +173,9 @@ def augment_document(target_text, mod_text, alignments):
     # But determine_insertion_point uses the full text. 
     # If we modify text, the next insertion point might be wrong if we use the original text.
     # Let's update the text iteratively.
+    
+    # Track insertions for frontend highlighting
+    insertions = []
     
     for item in missing_items:
         topic = item['topic']
@@ -184,4 +201,13 @@ def augment_document(target_text, mod_text, alignments):
         insertion = prefix + new_clause + suffix
         augmented_text = augmented_text[:idx] + insertion + augmented_text[idx:]
         
-    return augmented_text
+        # Record insertion for frontend
+        insertions.append({
+            "topic": topic,
+            "text": new_clause # backend returns just the clause text for fuzzy matching
+        })
+        
+    return {
+        "augmented_text": augmented_text,
+        "insertions": insertions
+    }

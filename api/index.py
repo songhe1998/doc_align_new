@@ -86,6 +86,8 @@ async def health_check():
         }
     }
 
+from typing import List, Dict, Any
+
 class AlignRequest(BaseModel):
     target_text: str
     mod_text: str
@@ -94,6 +96,8 @@ class AlignRequest(BaseModel):
 class AugmentRequest(BaseModel):
     target_text: str
     mod_text: str
+    alignments: List[Dict[str, Any]]
+    strategy: str = "standard"
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
@@ -143,8 +147,9 @@ async def align_docs(req: AlignRequest):
 @app.post("/augment")
 async def augment_docs(req: AugmentRequest):
     try:
-        augmented_text = augmenter.augment_document(req.target_text, req.mod_text, req.alignments)
-        return {"augmented_text": augmented_text}
+        result = augmenter.augment_document(req.target_text, req.mod_text, req.alignments)
+        # Result is now a dict: {"augmented_text": ..., "insertions": ...}
+        return result
     except Exception as e:
         import traceback
         return JSONResponse(status_code=500, content={"detail": f"{str(e)}\n{traceback.format_exc()}", "type": "AugmentError"})
